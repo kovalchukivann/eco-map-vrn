@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Эко-карта Воронежа — чистая среда</title>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Шрифт и иконки -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Верхняя панель -->
+        <div class="top-bar">
+            <div class="logo">
+                <img src="logo-eco-map.png" alt="Eco-Map VRN" class="logo-img">
+                <img src="logo-team.png" alt="Element X" class="logo-icon">
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Название или адрес...">
+                <button id="searchBtn"><i class="fas fa-search"></i> Поиск</button>
+            </div>
+            <a href="cup.html" class="cup-link">My Cup, Please</a>
+            <div class="account-icon" id="accountIcon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-layout">
+            <!-- Узкая полоска -->
+            <div class="sidebar-rail" id="sidebarRail">
+                <div class="rail-toggle" id="railToggle">
+                    <i class="fas fa-chevron-right" id="toggleIcon"></i>
+                </div>
+            </div>
+
+            <!-- Панель фильтров -->
+            <div class="sidebar-panel" id="sidebarPanel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-sliders-h"></i> Фильтры</h3>
+                </div>
+                <div class="panel-content">
+                    <!-- Тип точек -->
+                    <div class="filter-section">
+                        <label class="filter-title">Тип точек</label>
+                        <div class="filter-group">
+                            <!-- Вода -->
+                            <label class="filter-checkbox parent-filter">
+                                <input type="checkbox" class="filter-cb" data-type="water" id="waterMain" checked>
+                                <span>Пункты получения воды</span>
+                            </label>
+                            <div class="sub-filter-group" id="waterSubFilterGroup" style="margin-left: 24px; margin-top: 6px;">
+                                <label><input type="checkbox" class="water-sub" data-water-sub="kolonka" id="waterKolonka" checked> Водоразборная колонка</label>
+                                <label><input type="checkbox" class="water-sub" data-water-sub="tech" id="waterTech" checked> Техническая вода</label>
+                                <label><input type="checkbox" class="water-sub" data-water-sub="spring" id="waterSpring" checked> Источник</label>
+                            </div>
+                            
+                            <!-- Вторсырьё -->
+                            <label class="filter-checkbox parent-filter" style="margin-top: 12px;">
+                                <input type="checkbox" class="filter-cb" data-type="recycling" id="recyclingMain" checked>
+                                <span>Пункты приёма вторсырья</span>
+                            </label>
+                            <div class="sub-filter-group" id="recyclingSubFilterGroup" style="margin-left: 24px;">
+                                <label><input type="checkbox" class="recycling-sub" data-recycling-sub="battery" id="recBattery" checked> Батарейки</label>
+                                <label><input type="checkbox" class="recycling-sub" data-recycling-sub="paper" id="recPaper" checked> Бумага</label>
+                                <label><input type="checkbox" class="recycling-sub" data-recycling-sub="glass" id="recGlass" checked> Стекло</label>
+                                <label><input type="checkbox" class="recycling-sub" data-recycling-sub="plastic" id="recPlastic" checked> Пластик</label>
+                                <label><input type="checkbox" class="recycling-sub" data-recycling-sub="cloth" id="recCloth" checked> Ткань</label>
+                                <label><input type="checkbox" class="recycling-sub" data-recycling-sub="metal" id="recMetal" checked> Металл</label>
+                                <label><input type="checkbox" class="recycling-sub" data-recycling-sub="electronics" id="recElectronics" checked> Электроника</label>
+                            </div>
+
+                            <!-- Секонд-хенды (без подфильтров) -->
+                            <label class="filter-checkbox">
+                                <input type="checkbox" class="filter-cb" data-type="secondhand" id="secondhandMain" checked>
+                                <span>Секонд-хенды</span>
+                            </label>
+
+                            <!-- Магазины (новая категория) – только для id=188 пока -->
+                            <label class="filter-checkbox" style="margin-top: 12px;">
+                                <input type="checkbox" class="filter-cb" data-type="shop" id="shopMain" checked>
+                                <span>Магазины</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Район -->
+                    <div class="filter-section">
+                        <label class="filter-title">Район Воронежа</label>
+                        <div class="filter-group">
+                            <select id="districtFilter" class="district-select">
+                                <option value="all">Все районы</option>
+                                <option value="Железнодорожный">Железнодорожный</option>
+                                <option value="Коминтерновский">Коминтерновский</option>
+                                <option value="Левобережный">Левобережный</option>
+                                <option value="Ленинский">Ленинский</option>
+                                <option value="Советский">Советский</option>
+                                <option value="Центральный">Центральный</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Режим работы (вертикальные кнопки, без "Без фильтра") -->
+                    <div class="filter-section">
+                        <label class="filter-title">Режим работы</label>
+                        <div class="worktime-buttons-vertical">
+                            <button class="worktime-btn" data-value="open_now">Открыто сейчас</button>
+                            <button class="worktime-btn" data-value="24h">Круглосуточно</button>
+                            <button class="worktime-btn" data-value="all">Открыто в указанное время</button>
+                        </div>
+                        <!-- Блок выбора времени -->
+                        <div class="time-picker" id="timePicker">
+                            <label>Выберите время:</label>
+                            <div class="time-selectors">
+                                <select id="hourSelect"></select>
+                                <span>:</span>
+                                <select id="minuteSelect"></select>
+                                <button class="apply-time-btn" id="applyTimeBtn">Применить</button>
+                            </div>
+                            <div id="selectedTimeDisplay" style="font-size: 12px; color: #64748b; margin-top: 6px;">Выберите время</div>
+                        </div>
+                    </div>
+
+                    <!-- Рядом со мной -->
+                    <div class="filter-section">
+                        <label class="filter-checkbox" id="nearbyLabel">
+                            <input type="checkbox" id="nearbyFilter"> <span class="nearby-text"> Рядом со мной (до 2 км)</span>
+                        </label>
+                        <div id="geolocationStatus" style="font-size: 12px; color: #64748b; margin-top: 6px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Блок с картой -->
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+
+        <!-- Футер -->
+        <footer class="footer" id="footer">
+            <div class="footer-collapsed">
+                <div class="footer-col-preview">Эко-карта Воронежа</div>
+                <div class="footer-col-preview">Помочь проекту</div>
+                <div class="footer-col-preview">Контакты</div>
+            </div>
+            <div class="footer-expanded">
+                <div class="footer-inner">
+                    <div class="footer-columns">
+                        <div class="footer-col">
+                            <h4>Эко-карта Воронежа</h4>
+                            <p>Эко-карта Воронежа создана командой Элемент-Х в рамках "Инженерного кейса". Она отображает ключевые точки раздельного сбора мусора, пункты приема вторсырья, места, где можно набрать чистую питьевую воду бесплатно, а также другие полезные объекты экологической инфраструктуры.</p>
+                        </div>
+                        
+                        <div class="footer-col">
+                            <h4>Помочь проекту</h4>
+                            <p>Если вы заметили неточность или хотите добавить точку — напишите нам.</p>
+                            <button class="footer-btn" id="feedbackBtn">Сообщить о точке</button>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Контакты</h4>
+                            <p>ecomapvrn@mail.ru</p>
+                            <p><a class="foot-social" href="https://t.me/ecomapvrn">Telegram</a></p>
+                            <p><a class="foot-social" href="https://max.ru/join/UCx8TmDJUwpx-iC_lzVOShKo-WEkQYhOubUBl6vOK78">MAX</a></p>
+                            <p><a class="foot-social" href="https://vk.ru/club240008637">VK</a></p>   
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <span>© 2025 · Данные обновляются при участии жителей</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="points.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

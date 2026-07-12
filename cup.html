@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>My Cup Please — карта кофеен с наливом в свою кружку</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Специальные стили для cup.html */
+        .cup-map-container {
+            flex: 1;
+            position: relative;
+            margin: 16px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            background: #fff;
+            min-height: 500px;
+        }
+        .cup-iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        /* Скрываем боковую панель на этой странице */
+        .sidebar-rail, .sidebar-panel {
+            display: none;
+        }
+        /* Адаптируем layout под страницу без поиска */
+        .top-bar {
+            justify-content: space-between;
+        }
+        .search-container {
+            display: none; /* полностью убираем поисковую строку */
+        }
+        /* Растягиваем контейнер карты на всю ширину */
+        .main-layout {
+            display: flex;
+            flex: 1;
+        }
+        .map-container {
+            margin: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Верхняя панель с логотипом, кнопкой "My Cup, Please" и иконкой аккаунта -->
+        <div class="top-bar">
+            <div class="logo">
+                <img src="logo-eco-map.png" alt="Eco-Map VRN" class="logo-img">
+                <img src="logo-team.png" alt="Element X" class="logo-icon">
+            </div>
+            <!-- Поисковая строка полностью скрыта -->
+            <a href="index.html" class="cup-link active">Eco-map</a>
+            <div class="account-icon" id="accountIcon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+
+        <!-- Основной контент: только карта Google с приближением к Воронежу -->
+        <div class="main-layout">
+            <div class="cup-map-container">
+                <iframe 
+                    src="https://www.google.com/maps/d/embed?mid=1VqPQTgs95pB4EBzb1WLfyKBWNbSF8Wsn&ehbc=2E312F&ll=51.6605,39.2003&z=13" 
+                    class="cup-iframe" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Футер (такой же как на главной) -->
+        <footer class="footer" id="footer">
+            <div class="footer-collapsed">
+                <div class="footer-col-preview">Эко-карта Воронежа</div>
+                <div class="footer-col-preview">Контакты</div>
+                <div class="footer-col-preview">Помочь проекту</div>
+            </div>
+            <div class="footer-expanded">
+                <div class="footer-inner">
+                    <div class="footer-columns">
+                        <div class="footer-col">
+                            <h4>Эко-карта Воронежа</h4>
+                            <p>Проект экологического движения города. Карта "My Cup, Please" показывает заведения, где готовы налить напиток в вашу личную кружку.</p>
+                        </div>
+                        <div class="footer-col">
+                            <h4>Контакты</h4>
+                            <p><i class="fas fa-envelope"></i>levitskayadarina@gamil.com</p>
+                            <p><i class="fab fa-telegram"></i>t.me/darinale</p>
+                            <p><i class="fab fa-vk"></i>vk.com/darinalevi</p>
+                            <p><i class="fa-solid fa-phone"></i>+7 920 210 38 40</p>
+                        </div>
+                        <div class="footer-col">
+                            <h4>О проекте</h4>
+                            <p>Интерактивная карта заведений, поддерживающих использование многоразовой посуды. Присоединяйтесь к движению "My Cup Please"!</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <span>© 2025 · Данные предоставлены проектом My Cup Please</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Обработчик иконки аккаунта (как на главной)
+        document.getElementById('accountIcon').addEventListener('click', () => {
+            alert('Личный кабинет в разработке');
+        });
+    </script>
+</body>
+</html>
