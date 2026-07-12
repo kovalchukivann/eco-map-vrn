@@ -2730,22 +2730,22 @@ const ecoPoints = [
         contacts: "",
         website: "",
         recyclingTypes: []
-    },
-    {
-        id: 188,
-        name: "Всячина",
-        address: "ул. Волго-Донская, 4, Воронеж",
-        lat: 51.614296,
-        lng: 39.248796,
-        type: "shop",  // было "secondhand"
-        district: "Левобережный",
-        hours: "Пн–Пт 11:00–19:00, Сб–Вс 10:00–16:00",
-        hoursType: "regular",
-        description: "Благотворительный магазин / секонд-хенд",
-        contacts: "+7 (951) 855-10-16",
-        website: "",
-        recyclingTypes: []
     }
+    // {
+    //     id: 188,
+    //     name: "Всячина",
+    //     address: "ул. Волго-Донская, 4, Воронеж",
+    //     lat: 51.614296,
+    //     lng: 39.248796,
+    //     type: "shop",  // было "secondhand"
+    //     district: "Левобережный",
+    //     hours: "Пн–Пт 11:00–19:00, Сб–Вс 10:00–16:00",
+    //     hoursType: "regular",
+    //     description: "Благотворительный магазин / секонд-хенд",
+    //     contacts: "+7 (951) 855-10-16",
+    //     website: "",
+    //     recyclingTypes: []
+    // }
 ];
 
 const typeColors = {
